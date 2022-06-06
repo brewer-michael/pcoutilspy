@@ -11,6 +11,7 @@ SECRET = config('Secret')
 auth = {'application_id':APP_ID,'secret':SECRET}
 
 def main():
+    #create new service and return episode id
     url = 'https://api.planningcenteronline.com/publishing/v2/channels/3708/episodes'
     today = date.today()
     serviceDate = today.strftime('%B %d, %Y\"')
@@ -19,13 +20,17 @@ def main():
     headers = {}
     res = requests.post(url,auth=HTTPBasicAuth(APP_ID,SECRET),data=payload).json()
     episodeId = res['data']['id']
+    #query episode id for starttimeid and assign youtube url
     startsAt = today.strftime('\"%Y-%m-%d')
     startsAt = startsAt + 'T13:45:00+00:00\"'
     youtubeEmbed = '{\"data\":{\"attributes\":{\"starts_at\":'+startsAt+',\"video_embed_code\":\"<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/live_stream?autoplay=1&amp;channel=UCryZmERAkR6-fktliKiCGNA&amp;playsinline=1\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>\"}}}'
     print(youtubeEmbed)
     youtubeUrl = 'https://api.planningcenteronline.com/publishing/v2/episodes/' + episodeId + '/episode_times'
-    getepres = requests.get(youtubeUrl,auth=HTTPBasicAuth(APP_ID,SECRET),data=youtubeEmbed)
-    getepres()
+    getepres = requests.get(youtubeUrl,auth=HTTPBasicAuth(APP_ID,SECRET),data=youtubeEmbed).json()
+    episodeTimeId = getepres['data']['id']
+    episodeTimeURL = 'https://api.planningcenteronline.com/publishing/v2/episodes/'+ episodeId + '/episode_times/'+ episodeTimeId +'}}'
+    patchIframe = requests.patch(episodeTimeURL,auth=HTTPBasicAuth(APP_ID,SECRET,data=youtubeEmbed))
+    print(patchIframe)
     libraryUrl = 'https://api.planningcenteronline.com/publishing/v2/episodes/'+ episodeId +'/'
     libraryData = {'data':{'attributes':{'published_to_library_at':{{startsAt}}}}}
     addLibrary = requests.patch(libraryUrl,auth=HTTPBasicAuth(APP_ID,SECRET),data=libraryData)
