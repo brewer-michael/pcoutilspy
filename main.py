@@ -18,21 +18,18 @@ def main():
     payload= '{\"data\":{\"attributes\":{\"title\":'+serviceDate+'}}}'
     headers = {}
     res = requests.post(url,auth=HTTPBasicAuth(APP_ID,SECRET),data=payload).json()
-    # for item in res['data']:
-    #     id = item['id']
-    
     episodeId = res['data']['id']
-    print(episodeId)
-    startsAt = today.strftime('%d/%m/%Y')
-    startsAt = startsAt + 'T13:45:00+00:00'
-    youtubeEmbed = {'data':{'attributes':{'starts_at':startsAt,'video_embed_code':'<iframe width=\'560\' height=\'315\' src=\'https://www.youtube.com/embed/live_stream?autoplay=1&amp;channel=UCryZmERAkR6-fktliKiCGNA&amp;playsinline=1\' frameborder=\'0\' allow=\'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\' allowfullscreen></iframe>'}}}
+    startsAt = today.strftime('\"%Y-%m-%d')
+    startsAt = startsAt + 'T13:45:00+00:00\"'
+    youtubeEmbed = '{\"data\":{\"attributes\":{\"starts_at\":startsAt,\"video_embed_code\":\"<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/live_stream?autoplay=1&amp;channel=UCryZmERAkR6-fktliKiCGNA&amp;playsinline=1\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>\"}}}'
+    print(youtubeEmbed)
     youtubeUrl = 'https://api.planningcenteronline.com/publishing/v2/episodes/' + episodeId + '/episode_times'
     getepres = requests.get(youtubeUrl,auth=HTTPBasicAuth(APP_ID,SECRET),data=youtubeEmbed)
     getepres()
     libraryUrl = 'https://api.planningcenteronline.com/publishing/v2/episodes/'+ episodeId +'/'
     libraryData = {'data':{'attributes':{'published_to_library_at':{{startsAt}}}}}
-    addLibary = requests.patch(libraryUrl,auth=HTTPBasicAuth(APP_ID,SECRET),data=libraryData)
-    addLibary()
+    addLibrary = requests.patch(libraryUrl,auth=HTTPBasicAuth(APP_ID,SECRET),data=libraryData)
+    print(addLibrary)
 
 if __name__ == "__main__":
     main()
