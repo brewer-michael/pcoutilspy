@@ -13,9 +13,9 @@ auth = {'application_id':APP_ID,'secret':SECRET}
 def main():
     url = 'https://api.planningcenteronline.com/publishing/v2/channels/3708/episodes'
     today = date.today()
-    serviceDate = today.strftime("%B %d, %Y")
-    serviceDate = "Sunday, " + serviceDate
-    payload= {"data":{"attributes":{"title":serviceDate}}}
+    serviceDate = today.strftime('%B %d, %Y\"')
+    serviceDate = '\"Sunday, ' + serviceDate
+    payload= '{\"data\":{\"attributes\":{\"title\":'+serviceDate+'}}}'
     print(payload)
     headers = {}
     res = requests.post(url,auth=HTTPBasicAuth(APP_ID,SECRET),data=payload)
