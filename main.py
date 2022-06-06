@@ -15,7 +15,7 @@ def main():
     serviceDate = today.strftime('%B %d, %Y')
     payload= {'application_id':APP_ID,'secret':SECRET, 'data':{'attributes':{'title':'Sunday, ' + serviceDate}}}
     headers = {}
-    res = requests.post(url,data=payload).json()
+    res = requests.post(url,data=payload)
     episodeId = res.id
     startsAt = today.strftime('%d/%m/%Y')
     startsAt = startsAt + 'T13:45:00+00:00'
