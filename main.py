@@ -1,5 +1,4 @@
 #imports
-from msilib.schema import AppId
 import requests
 from requests.auth import HTTPBasicAuth
 import os
