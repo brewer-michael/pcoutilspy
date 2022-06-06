@@ -5,8 +5,8 @@ from decouple import config
 from datetime import date
 #define main function
 
-APP_ID = config.App_ID
-SECRET = config.Secret
+APP_ID = config('App_ID')
+SECRET = config('Secret')
 auth = {'application_id':APP_ID,'secret':SECRET}
 
 def main():
