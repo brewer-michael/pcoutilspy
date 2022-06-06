@@ -1,5 +1,6 @@
 #imports
 import requests
+import os
 from decouple import config
 from datetime import date
 #define main function
@@ -27,3 +28,5 @@ def main():
     addLibary = requests.patch(libraryUrl,libraryData)
     addLibary()
 
+if __name__ == "__main__":
+    main()
