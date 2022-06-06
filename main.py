@@ -19,8 +19,8 @@ def main():
     headers = {}
     res = requests.post(url,auth=HTTPBasicAuth(APP_ID,SECRET),data=payload)
     res = res.json()
-    print(res)
-    episodeId = res.id
+    episodeId = res.data['id']
+    print(episodeId)
     startsAt = today.strftime('%d/%m/%Y')
     startsAt = startsAt + 'T13:45:00+00:00'
     youtubeEmbed = {'data':{'attributes':{'starts_at':startsAt,'video_embed_code':'<iframe width=\'560\' height=\'315\' src=\'https://www.youtube.com/embed/live_stream?autoplay=1&amp;channel=UCryZmERAkR6-fktliKiCGNA&amp;playsinline=1\' frameborder=\'0\' allow=\'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\' allowfullscreen></iframe>'}}}
