@@ -18,12 +18,10 @@ def main():
     payload= '{\"data\":{\"attributes\":{\"title\":'+serviceDate+'}}}'
     headers = {}
     res = requests.post(url,auth=HTTPBasicAuth(APP_ID,SECRET),data=payload).json()
-    id = ''
-    for item in res['data']:
-        id = item['id']
+    # for item in res['data']:
+    #     id = item['id']
     
-    #episodeId = res.data['id']
-    episodeId = id
+    episodeId = res['data']['id']
     print(episodeId)
     startsAt = today.strftime('%d/%m/%Y')
     startsAt = startsAt + 'T13:45:00+00:00'
