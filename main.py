@@ -22,7 +22,8 @@ def main():
     for item in res['data']:
         id = item['id']
     
-    episodeId = res.data['id']
+    #episodeId = res.data['id']
+    episodeId = id
     print(episodeId)
     startsAt = today.strftime('%d/%m/%Y')
     startsAt = startsAt + 'T13:45:00+00:00'
