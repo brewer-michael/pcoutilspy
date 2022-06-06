@@ -27,7 +27,7 @@ def main():
     print(youtubeEmbed)
     youtubeUrl = 'https://api.planningcenteronline.com/publishing/v2/episodes/' + episodeId + '/episode_times'
     getepres = requests.get(youtubeUrl,auth=HTTPBasicAuth(APP_ID,SECRET),data=youtubeEmbed).json()
-    episodeTimeId = getepres['data']['id']
+    episodeTimeId = getepres['data'][0]['id']
     print(episodeTimeId)
     episodeTimeURL = 'https://api.planningcenteronline.com/publishing/v2/episodes/'+ episodeId + '/episode_times/'+ episodeTimeId +'}}'
     patchIframe = requests.patch(episodeTimeURL,auth=HTTPBasicAuth(APP_ID,SECRET,data=youtubeEmbed))
