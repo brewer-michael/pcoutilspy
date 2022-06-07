@@ -30,7 +30,7 @@ def main():
     #print(getepres)
     episodeTimeId = getepres['data'][0]['id']
     print(episodeTimeId)
-    episodeTimeURL = 'https://api.planningcenteronline.com/publishing/v2/episodes/'+ episodeId + '/episode_times/'+ episodeTimeId +'}}'
+    episodeTimeURL = 'https://api.planningcenteronline.com/publishing/v2/episodes/'+ episodeId + '/episode_times/'+ episodeTimeId
     patchIframe = requests.patch(episodeTimeURL,auth=HTTPBasicAuth(APP_ID,SECRET,data=youtubeEmbed))
     #print(patchIframe)
     libraryUrl = 'https://api.planningcenteronline.com/publishing/v2/episodes/'+ episodeId +'/'
