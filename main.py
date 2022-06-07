@@ -24,7 +24,7 @@ def main():
     #query episode id for starttimeid and assign youtube url
     startsAt = today.strftime('\"%Y-%m-%d')
     startsAt = startsAt + 'T13:45:00Z\"'
-    youtubeEmbed = '{\"data\":{\"attributes\":{\"starts_at\":'+startsAt+',\"video_embed_code\":\"<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/live_stream?autoplay=1&amp;channel=UCryZmERAkR6-fktliKiCGNA&amp;playsinline=1\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>\"}}}'
+    youtubeEmbed = '{\"data\":{\"attributes\":{\"starts_at\":'+startsAt+',\"video_embed_code\":\"<iframe width=\\\"560\\\" height=\\\"315\\\" src=\\\"https://www.youtube.com/embed/live_stream?autoplay=1&amp;channel=UCryZmERAkR6-fktliKiCGNA&amp;playsinline=1\\\" frameborder=\\\"0\\\" allow=\\\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\\" allowfullscreen></iframe>\"}}}'
     print(youtubeEmbed)
     youtubeUrl = 'https://api.planningcenteronline.com/publishing/v2/episodes/' + episodeId + '/episode_times'
     getepres = requests.get(youtubeUrl,auth=HTTPBasicAuth(APP_ID,SECRET),data=youtubeEmbed).json()
