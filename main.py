@@ -1,4 +1,5 @@
 #imports
+import json
 import requests
 from requests.auth import HTTPBasicAuth
 import os
@@ -31,10 +32,10 @@ def main():
     episodeTimeId = getepres['data'][0]['id']
     print(episodeTimeId)
     episodeTimeURL = 'https://api.planningcenteronline.com/publishing/v2/episodes/'+ episodeId + '/episode_times/'+ episodeTimeId
-    patchIframe = requests.patch(episodeTimeURL,auth=HTTPBasicAuth(APP_ID,SECRET,data=youtubeEmbed))
+    patchIframe = requests.patch(episodeTimeURL,auth=HTTPBasicAuth(APP_ID,SECRET),data=youtubeEmbed)
     #print(patchIframe)
     libraryUrl = 'https://api.planningcenteronline.com/publishing/v2/episodes/'+ episodeId +'/'
-    libraryData = {'data':{'attributes':{'published_to_library_at':{{startsAt}}}}}
+    libraryData = '{\"data\":{\"attributes\":{\"published_to_library_at\":'+startsAt+'}}}'
     addLibrary = requests.patch(libraryUrl,auth=HTTPBasicAuth(APP_ID,SECRET),data=libraryData)
     #print(addLibrary)
 
