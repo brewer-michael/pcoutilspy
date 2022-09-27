@@ -40,4 +40,11 @@ def main():
     #print(addLibrary)
 
 if __name__ == "__main__":
-    main()
+        try:
+                main()
+        except Fail:
+                sys.exit()
+        else:
+                pingConfirm = requests.get('https://hc-ping.com/0996324d-68a4-4098-a8ce-84152a1c132a')
+
+
