@@ -16,7 +16,7 @@ def main():
     #get most recent PCO sermon and update it once a live video is found at the specified youtube channel
     apitoken = os.environ.get('YTKEY')	
     today = date.today()
-    serviceDate = today.strftime('%B %d, %Y\"')
+    serviceDate = today.strftime('%B %d, %Y')
     serviceDate = '\"Sunday, ' + serviceDate
     pcoURL = 'https://api.planningcenteronline.com/publishing/v2/channels/3708/episodes?order=-published_live_at&page=1&where[search]=' + serviceDate
     res = requests.get(pcoURL,auth=HTTPBasicAuth(APP_ID,SECRET)).json()
