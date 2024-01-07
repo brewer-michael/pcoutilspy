@@ -61,8 +61,9 @@ def main():
         patchIframe = requests.patch(episodeTimeURL,auth=HTTPBasicAuth(APP_ID,SECRET),data=youtubeEmbed)
         print(patchIframe)
         libraryVideoURL = 'https://www.youtube.com/watch?v=' + youtubeVideoId
+        libraryPayload = '{\"data\":{\"attributes\":{\"library_video_url\":\"'+ libraryVideoURL +'\"}}}'
         pcoEpisodeURL = 'https://api.planningcenteronline.com/publishing/v2/episodes/' + episodeId
-        addLibrary = requests.patch(pcoEpisodeURL,auth=HTTPBasicAuth(APP_ID,SECRET),data=libraryVideoURL)
+        addLibrary = requests.patch(pcoEpisodeURL,auth=HTTPBasicAuth(APP_ID,SECRET),data=libraryPayload)
         print(addLibrary)
     except Exception:
            exit()
