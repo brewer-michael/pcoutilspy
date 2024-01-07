@@ -68,6 +68,8 @@ def main():
         youtubeVideoUrl = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&id=' + youtubeVideoId + '&key=' + apitoken
         youtubeVideoObject = requests.get(youtubeVideoUrl).json()
         youtubeVideoDescription = youtubeVideoObject['items'][0]['snippet']['description']
+        youtubeVideoDescription = youtubeVideoDescription.strip('"')
+        youtubeVideoDescription = youtubeVideoDescription.replace('\n','\\n')
         summaryPayload = '{\"data\":{\"attributes\":{\"description\":\"'+ youtubeVideoDescription +'\"}}}'
         addSummary = requests.patch(pcoEpisodeURL,auth=HTTPBasicAuth(APP_ID,SECRET),data=summaryPayload)
         print(addSummary)
