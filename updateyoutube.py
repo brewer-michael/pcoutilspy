@@ -32,7 +32,7 @@ def main():
     episodeTimeId = getepres['data'][0]['id']
     print(episodeTimeId)
     episodeTimeURL = 'https://api.planningcenteronline.com/publishing/v2/episodes/'+ episodeId + '/episode_times/'+ episodeTimeId
-    episodeTimeId = getepres['items'][0]['id']
+    episodeTimeId = getepres['data'][0]['id']
     print(episodeTimeId)
     #create a wait timer to get a valid youtube video id or else fail out the file
     def GetYoutubeVideoId(apitoken):
@@ -41,7 +41,7 @@ def main():
                 # Make the request
                 try:
                         getYoutubeLive = requests.get(youtubeLiveUrl).json()
-                        youtubeLiveId = getYoutubeLive['items']['id']['videoId']
+                        youtubeLiveId = getYoutubeLive['items'][0]['id']['videoId']
                         return youtubeLiveId
                 except (KeyError, IndexError):
                         pass
