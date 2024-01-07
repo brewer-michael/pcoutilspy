@@ -17,17 +17,17 @@ def main():
     apitoken = os.environ.get('YTKEY')	
     today = date.today()
     serviceDate = today.strftime('%B %d, %Y')
-    serviceDate = '\"Sunday, ' + serviceDate
+    serviceDate = 'Sunday, ' + serviceDate
     pcoURL = 'https://api.planningcenteronline.com/publishing/v2/channels/3708/episodes?order=-published_live_at&page=1&where[search]=' + serviceDate
     res = requests.get(pcoURL,auth=HTTPBasicAuth(APP_ID,SECRET)).json()
     print(res)
-    episodeId = res['data']['id']
+    episodeId = res['data'][0]['id']
     #need to get back listing from youtube to update embed url accordingly
     #query episode id for starttimeid and assign youtube url
     startsAt = today.strftime('\"%Y-%m-%d')
     startsAt = startsAt + 'T13:45:00Z\"'
     youtubeUrl = 'https://api.planningcenteronline.com/publishing/v2/episodes/' + episodeId + '/episode_times'
-    getepres = requests.get(youtubeUrl,auth=HTTPBasicAuth(APP_ID,SECRET),data=youtubeEmbed).json()
+    getepres = requests.get(youtubeUrl,auth=HTTPBasicAuth(APP_ID,SECRET)).json()
     #print(getepres)
     episodeTimeId = getepres['data'][0]['id']
     print(episodeTimeId)
