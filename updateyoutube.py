@@ -65,6 +65,12 @@ def main():
         pcoEpisodeURL = 'https://api.planningcenteronline.com/publishing/v2/episodes/' + episodeId
         addLibrary = requests.patch(pcoEpisodeURL,auth=HTTPBasicAuth(APP_ID,SECRET),data=libraryPayload)
         print(addLibrary)
+        youtubeVideoUrl = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&id=' + youtubeVideoId + '&key=' + apitoken
+        youtubeVideoObject = requests.get(youtubeVideoUrl).json()
+        youtubeVideoDescription = youtubeVideoObject['items'][0]['snippet']['description']
+        summaryPayload = '{\"data\":{\"attributes\":{\"description\":\"'+ youtubeVideoDescription +'\"}}}'
+        addSummary = requests.patch(pcoEpisodeURL,auth=HTTPBasicAuth(APP_ID,SECRET),data=summaryPayload)
+        print(addSummary)
     except Exception:
            exit()
 
