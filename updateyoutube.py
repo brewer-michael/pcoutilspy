@@ -14,34 +14,34 @@ auth = {'application_id':APP_ID,'secret':SECRET}
 
 def main():
     #get most recent PCO sermon and update it once a live video is found at the specified youtube channel
-    apitoken = str(os.environ.get('YTKEY'))
+    apitoken = os.environ.get('YTKEY')	
     today = date.today()
     serviceDate = today.strftime('%B %d, %Y')
-    serviceDate = 'Sunday, ' + serviceDate
+    serviceDate = '\"Sunday, ' + serviceDate
     pcoURL = 'https://api.planningcenteronline.com/publishing/v2/channels/3708/episodes?order=-published_live_at&page=1&where[search]=' + serviceDate
     res = requests.get(pcoURL,auth=HTTPBasicAuth(APP_ID,SECRET)).json()
     print(res)
-    episodeId = res['data'][0]['id']
+    episodeId = res['data']['id']
     #need to get back listing from youtube to update embed url accordingly
     #query episode id for starttimeid and assign youtube url
     startsAt = today.strftime('\"%Y-%m-%d')
     startsAt = startsAt + 'T13:45:00Z\"'
     youtubeUrl = 'https://api.planningcenteronline.com/publishing/v2/episodes/' + episodeId + '/episode_times'
-    getepres = requests.get(youtubeUrl,auth=HTTPBasicAuth(APP_ID,SECRET)).json()
+    getepres = requests.get(youtubeUrl,auth=HTTPBasicAuth(APP_ID,SECRET),data=youtubeEmbed).json()
     #print(getepres)
     episodeTimeId = getepres['data'][0]['id']
     print(episodeTimeId)
     episodeTimeURL = 'https://api.planningcenteronline.com/publishing/v2/episodes/'+ episodeId + '/episode_times/'+ episodeTimeId
-    #episodeTimeId = getepres['items'][0]['id']
+    episodeTimeId = getepres['items'][0]['id']
     print(episodeTimeId)
     #create a wait timer to get a valid youtube video id or else fail out the file
     def GetYoutubeVideoId(apitoken):
         youtubeLiveUrl = 'https://www.googleapis.com/youtube/v3/search?part=snippet&eventType=live&maxResults=1&order=date&type=video&key=' + apitoken  + '&channelId=UCryZmERAkR6-fktliKiCGNA'
-        for _ in range(2):  # 30 attempts with 10-second intervals = 5 minutes
+        for _ in range(30):  # 30 attempts with 10-second intervals = 5 minutes
                 # Make the request
                 try:
                         getYoutubeLive = requests.get(youtubeLiveUrl).json()
-                        youtubeLiveId = getYoutubeLive['items'][0]['id']['videoId']
+                        youtubeLiveId = getYoutubeLive['items']['id']['videoId']
                         return youtubeLiveId
                 except (KeyError, IndexError):
                         pass
@@ -55,11 +55,15 @@ def main():
     #print(getepres)
     try:
         youtubeVideoId = GetYoutubeVideoId(apitoken)
-        youtubeEmbed = '{\"data\":{\"attributes\":{\"starts_at\":'+startsAt+',\"video_embed_code\":\"<iframe width=\\\"560\\\" height=\\\"315\\\" src=\\\"https://www.youtube.com/embed/'+ youtubeVideoId +'?autoplay=1&amp;playsinline=1\\\" frameborder=\\\"0\\\" allow=\\\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\\\" allowfullscreen></iframe>\\\\"}}}'
+        #youtubeEmbed = '{\"data\":{\"attributes\":{\"starts_at\":'+startsAt+',\"video_embed_code\":\"<iframe width=\\\"560\\\" height=\\\"315\\\" src=\\\"https://www.youtube.com/embed/'+ youtubeVideoId +'?autoplay=1&amp;playsinline=1\\\" frameborder=\\\"0\\\" allow=\\\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\\\" allowfullscreen></iframe>\\\\"}}}'
+        youtubeEmbed = '{\"data\":{\"attributes\":{\"starts_at\":'+startsAt+',\"video_embed_code\":\"<iframe width=\\\"560\\\" height=\\\"315\\\" src=\\\"https://www.youtube.com/embed/'+ youtubeVideoId +'\\\" frameborder=\\\"0\\\" allow=\\\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\\\" allowfullscreen></iframe>\\\\"}}}'
         print(youtubeEmbed)
         patchIframe = requests.patch(episodeTimeURL,auth=HTTPBasicAuth(APP_ID,SECRET),data=youtubeEmbed)
         print(patchIframe)
-        #print(addLibrary)
+        libraryVideoURL = 'https://www.youtube.com/watch?v=' + youtubeVideoId
+        pcoEpisodeURL = 'https://api.planningcenteronline.com/publishing/v2/episodes/' + episodeId
+        addLibrary = requests.patch(pcoEpisodeURL,auth=HTTPBasicAuth(APP_ID,SECRET),data=libraryVideoURL)
+        print(addLibrary)
     except Exception:
            exit()
 
