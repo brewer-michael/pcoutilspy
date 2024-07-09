@@ -85,4 +85,4 @@ if __name__ == "__main__":
         except Fail:
                 sys.exit()
         else:
-                pingConfirm = requests.get('https://hc-ping.com/0996324d-68a4-4098-a8ce-84152a1c132a')
+                pingConfirm = requests.get('https://hc-ping.com/78356338-0428-4f04-ad71-b3f805264745')
