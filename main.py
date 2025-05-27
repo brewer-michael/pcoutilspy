@@ -37,7 +37,7 @@ def main():
     libraryUrl = 'https://api.planningcenteronline.com/publishing/v2/episodes/'+ episodeId +'/'
     libraryData = '{\"data\":{\"attributes\":{\"published_to_library_at\":'+startsAt+'}}}'
     addLibrary = requests.patch(libraryUrl,auth=HTTPBasicAuth(APP_ID,SECRET),data=libraryData)
-    #print(addLibrary)
+    print(addLibrary)
 
 if __name__ == "__main__":
         try:
