@@ -23,8 +23,8 @@ def main():
     episodeId = res['data']['id']
     #query episode id for starttimeid and assign youtube url
     startsAt = today.strftime('\"%Y-%m-%d')
-    #startsAt = startsAt + 'T13:45:00Z\"'
-    startsAt = startsAt + 'T13:45:00+00:00\"'
+    startsAt = startsAt + 'T13:45:00Z\"'
+    startsAtPCO = startsAt + 'T13:45:00+00:00\"'
     youtubeEmbed = '{\"data\":{\"attributes\":{\"starts_at\":'+startsAt+',\"video_embed_code\":\"<iframe width=\\\"560\\\" height=\\\"315\\\" src=\\\"https://www.youtube.com/embed/live_stream?autoplay=1&amp;channel=RaDDkBdBMRA&amp;playsinline=1\\\" frameborder=\\\"0\\\" allow=\\\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\\" allowfullscreen></iframe>\"}}}'
     print(youtubeEmbed)
     youtubeUrl = 'https://api.planningcenteronline.com/publishing/v2/episodes/' + episodeId + '/episode_times'
@@ -36,7 +36,7 @@ def main():
     patchIframe = requests.patch(episodeTimeURL,auth=HTTPBasicAuth(APP_ID,SECRET),data=youtubeEmbed)
     print(patchIframe)
     libraryUrl = 'https://api.planningcenteronline.com/publishing/v2/episodes/'+ episodeId +'/'
-    libraryData = '{\"data\":{\"attributes\":{\"published_to_library_at\":'+startsAt+'}}}'
+    libraryData = '{\"data\":{\"attributes\":{\"published_to_library_at\":'+startsAtPCO+'}}}'
     addLibrary = requests.patch(libraryUrl,auth=HTTPBasicAuth(APP_ID,SECRET),data=libraryData)
     print(addLibrary)
 
