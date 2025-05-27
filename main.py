@@ -16,15 +16,15 @@ def main():
     url = 'https://api.planningcenteronline.com/publishing/v2/channels/3708/episodes'
     today = date.today()
     serviceDate = today.strftime('%B %d, %Y\"')
+    dateNow = today.strftime('\"%Y-%m-%d')
+    startsAt = dateNow + 'T13:45:00Z\"'
+    startsAtPCO = dateNow + 'T13:45:00+00:00\"'
     serviceDate = '\"Sunday, ' + serviceDate
-    payload= '{\"data\":{\"attributes\":{\"published_to_library_at\":'+serviceDate+',\"title\":'+serviceDate+'}}}'
+    payload= '{\"data\":{\"attributes\":{\"published_to_library_at\":'+startsAt+',\"title\":'+serviceDate+'}}}'
     headers = {}
     res = requests.post(url,auth=HTTPBasicAuth(APP_ID,SECRET),data=payload).json()
     episodeId = res['data']['id']
     #query episode id for starttimeid and assign youtube url
-    dateNow = today.strftime('\"%Y-%m-%d')
-    startsAt = dateNow + 'T13:45:00Z\"'
-    startsAtPCO = dateNow + 'T13:45:00+00:00\"'
     youtubeEmbed = '{\"data\":{\"attributes\":{\"starts_at\":'+startsAt+',\"video_embed_code\":\"<iframe width=\\\"560\\\" height=\\\"315\\\" src=\\\"https://www.youtube.com/embed/live_stream?autoplay=1&amp;channel=RaDDkBdBMRA&amp;playsinline=1\\\" frameborder=\\\"0\\\" allow=\\\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\\" allowfullscreen></iframe>\"}}}'
     print(youtubeEmbed)
     youtubeUrl = 'https://api.planningcenteronline.com/publishing/v2/episodes/' + episodeId + '/episode_times'
