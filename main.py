@@ -17,7 +17,7 @@ def main():
     today = date.today()
     serviceDate = today.strftime('%B %d, %Y\"')
     serviceDate = '\"Sunday, ' + serviceDate
-    payload= '{\"data\":{\"attributes\":{\"title\":'+serviceDate+'}}}'
+    payload= '{\"data\":{\"attributes\":{\"published_to_library_at\":'+serviceDate+',\"title\":'+serviceDate+'}}}'
     headers = {}
     res = requests.post(url,auth=HTTPBasicAuth(APP_ID,SECRET),data=payload).json()
     episodeId = res['data']['id']
