@@ -20,12 +20,13 @@ def main():
     serviceDate = 'Sunday, ' + serviceDate
     pcoURL = 'https://api.planningcenteronline.com/publishing/v2/channels/3708/episodes?order=-published_live_at&page=1&where[search]=' + serviceDate
     res = requests.get(pcoURL,auth=HTTPBasicAuth(APP_ID,SECRET))
-    print(res)
+    
+    #print(res)
 
     try:
         res_json = res.json()
         episodeId = res_json["data"][0]["id"]
-        print("Episode ID:", episodeId)
+        #print("Episode ID:", episodeId)
     except Exception as e:
         print("Failed to parse episode response:", e)
         return
@@ -41,17 +42,16 @@ def main():
     try:
         getepres_json = getepres.json()
         episodeTimeId = getepres_json["data"][0]["id"]
-        print("Episode Time ID:", episodeTimeId)
+        #print("Episode Time ID:", episodeTimeId)
     except Exception as e:
         print("Failed to parse episode times:", e)
         return
 
     #print(getepres)
     #episodeTimeId = getepres['data'][0]['id']
-    print(episodeTimeId)
+    #print(episodeTimeId)
     episodeTimeURL = 'https://api.planningcenteronline.com/publishing/v2/episodes/'+ episodeId + '/episode_times/'+ episodeTimeId
     #episodeTimeId = getepres['data'][0]['id']
-    print(episodeTimeId)
     #create a wait timer to get a valid youtube video id or else fail out the file
     def GetYoutubeVideoId(apitoken):
         youtubeLiveUrl = 'https://www.googleapis.com/youtube/v3/search?part=snippet&eventType=live&maxResults=1&order=date&type=video&key=' + apitoken  + '&channelId=UCryZmERAkR6-fktliKiCGNA'
@@ -91,9 +91,9 @@ def main():
             }
         }
 
-        print(youtubeEmbed)
+        #print(youtubeEmbed)
         patchIframe = requests.patch(episodeTimeURL,auth=HTTPBasicAuth(APP_ID,SECRET),data=youtubeEmbed)
-        print(patchIframe)
+        print("Iframe embed" +  patchIframe)
         libraryVideoURL = 'https://www.youtube.com/watch?v=' + youtubeVideoId
         #libraryPayload = '{\"data\":{\"attributes\":{\"library_video_url\":\"'+ libraryVideoURL +'\"}}}'
         
@@ -101,7 +101,7 @@ def main():
 
         pcoEpisodeURL = 'https://api.planningcenteronline.com/publishing/v2/episodes/' + episodeId
         addLibrary = requests.patch(pcoEpisodeURL,auth=HTTPBasicAuth(APP_ID,SECRET),data=libraryPayload)
-        print(addLibrary)
+        print("Library embed" + addLibrary)
         youtubeVideoUrl = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&id=' + youtubeVideoId + '&key=' + apitoken
         youtubeVideoObject = requests.get(youtubeVideoUrl).json()
         youtubeVideoDescription = youtubeVideoObject['items'][0]['snippet']['description']
@@ -109,10 +109,10 @@ def main():
         youtubeVideoDescription = youtubeVideoDescription.replace('\n','\\n')
         youtubeVideoDescription = youtubeVideoDescription.strip('\'')
         youtubeVideoDescription = youtubeVideoDescription.strip(' ')
-        print(youtubeVideoDescription)
+        #print(youtubeVideoDescription)
         summaryPayload = '{\"data\":{\"attributes\":{\"description\":\"'+ youtubeVideoDescription +'\"}}}'
         addSummary = requests.patch(pcoEpisodeURL,auth=HTTPBasicAuth(APP_ID,SECRET),data=summaryPayload)
-        print(addSummary)
+        #print(addSummary)
     except Exception:
            exit()
 
