@@ -93,7 +93,7 @@ def main():
 
         #print(youtubeEmbed)
         patchIframe = requests.patch(episodeTimeURL,auth=HTTPBasicAuth(APP_ID,SECRET),data=youtubeEmbed)
-        print("Iframe embed" +  patchIframe)
+        print(patchIframe) #<Response [400]>
         libraryVideoURL = 'https://www.youtube.com/watch?v=' + youtubeVideoId
         #libraryPayload = '{\"data\":{\"attributes\":{\"library_video_url\":\"'+ libraryVideoURL +'\"}}}'
         
@@ -101,7 +101,7 @@ def main():
 
         pcoEpisodeURL = 'https://api.planningcenteronline.com/publishing/v2/episodes/' + episodeId
         addLibrary = requests.patch(pcoEpisodeURL,auth=HTTPBasicAuth(APP_ID,SECRET),data=libraryPayload)
-        print("Library embed" + addLibrary)
+        print(addLibrary) #<Response [400]>
         youtubeVideoUrl = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&id=' + youtubeVideoId + '&key=' + apitoken
         youtubeVideoObject = requests.get(youtubeVideoUrl).json()
         youtubeVideoDescription = youtubeVideoObject['items'][0]['snippet']['description']
