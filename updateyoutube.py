@@ -94,6 +94,22 @@ def main():
         #print(youtubeEmbed)
         patchIframe = requests.patch(episodeTimeURL,auth=HTTPBasicAuth(APP_ID,SECRET),data=youtubeEmbed)
         print(patchIframe) #<Response [400]>
+
+        # Log patchIframe attributes
+        log_file = "pco_patch_log.txt"
+
+        with open(log_file, "a") as f:
+            f.write("=== YouTube Embed Payload ===\n")
+            f.write(json.dumps(youtubeEmbed, indent=2))  # nicely formatted JSON
+            f.write("\n" + "="*20 + "\n")
+            f.write("=== PATCH Response ===\n")
+            f.write(f"Status: {patchIframe.status_code}\n")
+            try:
+                f.write(json.dumps(patchIframe.json(), indent=2))
+            except Exception:
+                f.write(patchIframe.text)  # fallback if response is not JSON
+            f.write("\n" + "="*20 + "\n\n")
+
         libraryVideoURL = 'https://www.youtube.com/watch?v=' + youtubeVideoId
         #libraryPayload = '{\"data\":{\"attributes\":{\"library_video_url\":\"'+ libraryVideoURL +'\"}}}'
         
@@ -112,7 +128,7 @@ def main():
         #print(youtubeVideoDescription)
         summaryPayload = '{\"data\":{\"attributes\":{\"description\":\"'+ youtubeVideoDescription +'\"}}}'
         addSummary = requests.patch(pcoEpisodeURL,auth=HTTPBasicAuth(APP_ID,SECRET),data=summaryPayload)
-        #print(addSummary)
+        print(addSummary)
     except Exception:
            exit()
 
