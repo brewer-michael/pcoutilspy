@@ -128,3 +128,12 @@ dmypy.json
 # Pyre type checker
 .pyre/
 .vscode/launch.json
+
+# claude
+.claude/
+
+# qa files
+*.txt
+RESOURCE_IDS_REFERENCE.md
+QA_TEST_REPORT.md
+*.json
